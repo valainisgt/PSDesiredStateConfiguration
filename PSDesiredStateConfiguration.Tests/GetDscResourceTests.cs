@@ -55,7 +55,17 @@ public class GetDscResourceTests {
         var dscResources = sut.InvokeCommand("Get-DscResource");
         Assert.NotEmpty(dscResources);
     }
-    
+    [Fact]
+    public void PotentialFixGetsResources() {
+        var sut = new PowerShellWrapper(new string[] {
+            GetBuiltInModulesPath(),
+            GetApplicationDscResourceModulesPath(),
+            GetCustomModulesPath(),
+        });
+
+        var dscResources = sut.InvokeCommand("Get-DscResource");
+        Assert.NotEmpty(dscResources);
+    }
     class PowerShellWrapper : IDisposable {
         private readonly Lazy<Runspace> runspace;
         public PowerShellWrapper(IEnumerable<string> psModulePaths) {
@@ -88,6 +98,9 @@ public class GetDscResourceTests {
     }
     public static string GetApplicationModulesPath() {
         return Path.Combine(AppContext.BaseDirectory, "Modules");
+    }
+    public static string GetCustomModulesPath() {
+        return Path.Combine(AppContext.BaseDirectory, "CustomModules");
     }
     public static string GetBuiltInModulesPath() {
         var pwshModules = System.Management.Automation.ModuleIntrinsics.GetModulePath("", null, null);
