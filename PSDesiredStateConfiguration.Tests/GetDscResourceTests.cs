@@ -11,10 +11,13 @@ namespace PSDesiredStateConfiguration.Tests;
 public class GetDscResourceTests {
     [Fact]
     public void ExpectedResourcesAreFound() {
+        // PSModulePath ends up similar to:
+        // C:\PSDesiredStateConfiguration.Tests\runtimes\win\lib\net6.0\Modules;C:\PSDesiredStateConfiguration.Tests\DscResourceModules;C:\PSDesiredStateConfiguration.Tests\Modules
+        // when this is split on the colon you can see why that would be problematic
         var sut = new PowerShellWrapper(new string[] {
-            GetBuiltInModulesPath(),
-            GetApplicationDscResourceModulesPath(),
-            GetApplicationModulesPath(),
+            GetBuiltInModulesPath(),                 // the built in modules that come with the powershell sdk (Microsoft.PowerShell.Management, Microsoft.PowerShell.Security, etc)
+            GetApplicationDscResourceModulesPath(),  // module folder that has the PSDscResources module saved
+            GetApplicationModulesPath(),             // module folder that has the PSDesiredStateConfiguration 2.0.5 module saved
         });
 
         var dscResources = sut.InvokeCommand("Get-DscResource");
@@ -22,6 +25,11 @@ public class GetDscResourceTests {
     }
     [Fact]
     public void ExpectedResourcesAreFoundByChance() {
+        // Depending on what the order of path values in PSModulePath is
+        // you might actually get some resources back.
+        // When the PSModulePath for this powershell instance is split the last value is:
+        // \PSDesiredStateConfiguration.Tests\DscResourceModules
+        // which later on down the line ends up resolving
         var sut = new PowerShellWrapper(new string[] {
             GetBuiltInModulesPath(),
             GetApplicationModulesPath(),
@@ -34,9 +42,9 @@ public class GetDscResourceTests {
     [Fact]
     public void PotentialFixGetsResources() {
         var sut = new PowerShellWrapper(new string[] {
-            GetBuiltInModulesPath(),
-            GetApplicationDscResourceModulesPath(),
-            GetCustomModulesPath(),
+            GetBuiltInModulesPath(),                 // the built in modules that come with the powershell sdk (Microsoft.PowerShell.Management, Microsoft.PowerShell.Security, etc)
+            GetApplicationDscResourceModulesPath(),  // module folder that has the PSDscResources module saved
+            GetCustomModulesPath()                   // module folder that has my proposed fix to PSDesiredStateConfiguration
         });
 
         var dscResources = sut.InvokeCommand("Get-DscResource");
