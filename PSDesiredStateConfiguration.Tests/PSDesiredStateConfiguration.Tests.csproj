@@ -30,6 +30,8 @@
 		<Content Include="DscResourceModules\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+
+    <Content Include="..\PSDesiredStateConfiguration\**" LinkBase="CustomModules\PSDesiredStateConfiguration" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
