@@ -21,33 +21,9 @@ public class GetDscResourceTests {
         Assert.NotEmpty(dscResources);
     }
     [Fact]
-    public void FailingOrder2() {
-        var sut = new PowerShellWrapper(new string[] {
-            GetBuiltInModulesPath(),
-            GetApplicationDscResourceModulesPath(),
-            GetApplicationDscResourceModulesPath(),
-            GetApplicationModulesPath()
-        });
-
-        var dscResources = sut.InvokeCommand("Get-DscResource");
-        Assert.NotEmpty(dscResources);
-    }
-    [Fact]
     public void PassingOrder1() {
         var sut = new PowerShellWrapper(new string[] {
             GetBuiltInModulesPath(),
-            GetApplicationModulesPath(),
-            GetApplicationDscResourceModulesPath()
-        });
-
-        var dscResources = sut.InvokeCommand("Get-DscResource");
-        Assert.NotEmpty(dscResources);
-    }
-    [Fact]
-    public void PassingOrder2() {
-        var sut = new PowerShellWrapper(new string[] {
-            GetBuiltInModulesPath(),
-            GetApplicationDscResourceModulesPath(),
             GetApplicationModulesPath(),
             GetApplicationDscResourceModulesPath()
         });
