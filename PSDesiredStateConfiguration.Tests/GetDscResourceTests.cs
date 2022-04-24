@@ -10,7 +10,7 @@ namespace PSDesiredStateConfiguration.Tests;
 
 public class GetDscResourceTests {
     [Fact]
-    public void FailingOrder1() {
+    public void ExpectedResourcesAreFound() {
         var sut = new PowerShellWrapper(new string[] {
             GetBuiltInModulesPath(),
             GetApplicationDscResourceModulesPath(),
@@ -21,7 +21,7 @@ public class GetDscResourceTests {
         Assert.NotEmpty(dscResources);
     }
     [Fact]
-    public void PassingOrder1() {
+    public void ExpectedResourcesAreFoundByChance() {
         var sut = new PowerShellWrapper(new string[] {
             GetBuiltInModulesPath(),
             GetApplicationModulesPath(),
